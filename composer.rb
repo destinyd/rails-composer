@@ -93,7 +93,8 @@ module Gemfile
 end
 def add_gem(*all) Gemfile.add(*all); end
 
-@recipes = ["core", "git", "railsapps", "learn_rails", "rails_bootstrap", "rails_foundation", "rails_omniauth", "rails_devise", "rails_devise_roles", "rails_devise_pundit", "rails_signup_download", "rails_mailinglist_activejob", "rails_stripe_checkout", "rails_stripe_coupons", "setup", "locale", "readme", "gems", "tests", "email", "devise", "omniauth", "roles", "frontend", "pages", "init", "analytics", "deployment", "extras"]
+# todo 如果有新的recipe, 必须添加选项进数组，才可以被执行
+@recipes = ["core", "git", "railsapps", "mindpin-all", "learn_rails", "rails_bootstrap", "rails_foundation", "rails_omniauth", "rails_devise", "rails_devise_roles", "rails_devise_pundit", "rails_signup_download", "rails_mailinglist_activejob", "rails_stripe_checkout", "rails_stripe_coupons", "setup", "locale", "readme", "gems", "tests", "email", "devise", "omniauth", "roles", "frontend", "pages", "init", "analytics", "deployment", "extras"]
 @prefs = {}
 @gems = []
 @diagnostics_recipes = [["example"], ["setup"], ["railsapps"], ["gems", "setup"], ["gems", "readme", "setup"], ["extras", "gems", "readme", "setup"], ["example", "git"], ["git", "setup"], ["git", "railsapps"], ["gems", "git", "setup"], ["gems", "git", "readme", "setup"], ["extras", "gems", "git", "readme", "setup"], ["email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["core", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["core", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["core", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["email", "example", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["email", "example", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["email", "example", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["apps4", "core", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["apps4", "core", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "tests"], ["apps4", "core", "deployment", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["apps4", "core", "deployment", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "tests"], ["apps4", "core", "deployment", "devise", "email", "extras", "frontend", "gems", "git", "init", "omniauth", "pundit", "railsapps", "readme", "setup", "tests"]]
@@ -238,22 +239,27 @@ def which(cmd)
   return nil
 end
 # >-------------------------- templates/helpers.erb --------------------------end<
+#
+# 这里开始
 
-say_wizard("\033[1m\033[36m" + "" + "\033[0m")
+#say_wizard("\033[1m\033[36m" + "" + "\033[0m")
 
-say_wizard("\033[1m\033[36m" + ' _____       _ _' + "\033[0m")
-say_wizard("\033[1m\033[36m" + "|  __ \\     \(_\) |       /\\" + "\033[0m")
-say_wizard("\033[1m\033[36m" + "| |__) |__ _ _| |___   /  \\   _ __  _ __  ___" + "\033[0m")
-say_wizard("\033[1m\033[36m" + "|  _  /\/ _` | | / __| / /\\ \\ | \'_ \| \'_ \\/ __|" + "\033[0m")
-say_wizard("\033[1m\033[36m" + "| | \\ \\ (_| | | \\__ \\/ ____ \\| |_) | |_) \\__ \\" + "\033[0m")
-say_wizard("\033[1m\033[36m" + "|_|  \\_\\__,_|_|_|___/_/    \\_\\ .__/| .__/|___/" + "\033[0m")
-say_wizard("\033[1m\033[36m" + "                             \| \|   \| \|" + "\033[0m")
-say_wizard("\033[1m\033[36m" + "                             \| \|   \| \|" + "\033[0m")
-say_wizard("\033[1m\033[36m" + '' + "\033[0m")
-say_wizard("\033[1m\033[36m" + "Rails Composer, open source, supported by subscribers." + "\033[0m")
-say_wizard("\033[1m\033[36m" + "Please join RailsApps to support development of Rails Composer." + "\033[0m")
-say_wizard("Need help? Ask on Stack Overflow with the tag \'railsapps.\'")
-say_wizard("Your new application will contain diagnostics in its README file.")
+#say_wizard("\033[1m\033[36m" + ' _____       _ _' + "\033[0m")
+#say_wizard("\033[1m\033[36m" + "|  __ \\     \(_\) |       /\\" + "\033[0m")
+#say_wizard("\033[1m\033[36m" + "| |__) |__ _ _| |___   /  \\   _ __  _ __  ___" + "\033[0m")
+#say_wizard("\033[1m\033[36m" + "|  _  /\/ _` | | / __| / /\\ \\ | \'_ \| \'_ \\/ __|" + "\033[0m")
+#say_wizard("\033[1m\033[36m" + "| | \\ \\ (_| | | \\__ \\/ ____ \\| |_) | |_) \\__ \\" + "\033[0m")
+#say_wizard("\033[1m\033[36m" + "|_|  \\_\\__,_|_|_|___/_/    \\_\\ .__/| .__/|___/" + "\033[0m")
+#say_wizard("\033[1m\033[36m" + "                             \| \|   \| \|" + "\033[0m")
+#say_wizard("\033[1m\033[36m" + "                             \| \|   \| \|" + "\033[0m")
+#say_wizard("\033[1m\033[36m" + '' + "\033[0m")
+#say_wizard("\033[1m\033[36m" + "Rails Composer, open source, supported by subscribers." + "\033[0m")
+#say_wizard("\033[1m\033[36m" + "Please join RailsApps to support development of Rails Composer." + "\033[0m")
+#say_wizard("Need help? Ask on Stack Overflow with the tag \'railsapps.\'")
+#say_wizard("Your new application will contain diagnostics in its README file.")
+
+say_wizard("")
+say_wizard("中文版网址：https://github.com/destinyd/rails-composer-1")
 
 if diagnostics_recipes.sort.include? recipes.sort
   diagnostics[:recipes] = 'success'
@@ -264,20 +270,24 @@ end
 # this application template only supports Rails version 4.1 and newer
 case Rails::VERSION::MAJOR.to_s
 when "3"
+    #不提供rails3支持,谢谢
     say_wizard "You are using Rails version #{Rails::VERSION::STRING} which is not supported. Use Rails 4.1 or newer."
     raise StandardError.new "Rails #{Rails::VERSION::STRING} is not supported. Use Rails 4.1 or newer."
 when "4"
   case Rails::VERSION::MINOR.to_s
   when "0"
+    #不提供rails4.0支持,谢谢
     say_wizard "You are using Rails version #{Rails::VERSION::STRING} which is not supported. Use Rails 4.1 or newer."
     raise StandardError.new "Rails #{Rails::VERSION::STRING} is not supported. Use Rails 4.1 or newer."
   end
 else
+  #不提供rails其他版本支持,谢谢
   say_wizard "You are using Rails version #{Rails::VERSION::STRING} which is not supported. Use Rails 4.1 or newer."
   raise StandardError.new "Rails #{Rails::VERSION::STRING} is not supported. Use Rails 4.1 or newer."
 end
 
 # >---------------------------[ Autoload Modules/Classes ]-----------------------------<
+# 自动加载lib下面模块
 
 inject_into_file 'config/application.rb', :after => 'config.autoload_paths += %W(#{config.root}/extras)' do <<-'RUBY'
 
@@ -292,6 +302,7 @@ end
 @current_recipe = "core"
 @before_configs["core"].call if @before_configs["core"]
 say_recipe 'core'
+# 这个应该是前置分类显示栈
 @configs[@current_recipe] = config
 # >----------------------------- recipes/core.rb -----------------------------start<
 
@@ -361,13 +372,18 @@ when "4"
     say_wizard "Please upgrade to Rails 4.1 or newer."
   else
     prefs[:apps4] = multiple_choice "Build a starter application?",
-      [["Build a RailsApps example application", "railsapps"],
-      ["Contributed applications (none available)", "contributed_app"],
-      ["Custom application (experimental)", "none"]] unless prefs.has_key? :apps4
+      [
+        #["Build a RailsApps example application", "railsapps"],
+        #["Contributed applications (none available)", "contributed_app"],
+        ["Mindpin 项目模板", "mindpin_railsapps"],
+        #["DD个人定制 项目模板", "dd_railsapps"],
+        ["自定义项目组件 (experimental)", "none"]
+      ] unless prefs.has_key? :apps4
     case prefs[:apps4]
       when 'railsapps'
         case Rails::VERSION::MINOR.to_s
         when "2"
+          # railsapps 4.2 模板
           prefs[:apps4] = multiple_choice "Choose a starter application.",
           [["learn-rails", "learn-rails"],
           ["rails-bootstrap", "rails-bootstrap"],
@@ -381,6 +397,7 @@ when "4"
           ["rails-stripe-checkout", "rails-stripe-checkout"],
           ["rails-stripe-coupons", "rails-stripe-coupons"]]
         else
+          # railsapps 4.1 模板？
           prefs[:apps4] = multiple_choice "Upgrade to Rails 4.2 for more choices.",
           [["learn-rails", "learn-rails"],
           ["rails-bootstrap", "rails-bootstrap"],
@@ -393,22 +410,145 @@ when "4"
       when 'contributed_app'
         prefs[:apps4] = multiple_choice "No contributed applications are available.",
           [["create custom application", "railsapps"]]
+      when 'mindpin_railsapps'
+        # minpin 模板
+          prefs[:apps4] = multiple_choice "选择一个模板.",
+          [
+            ["全套（可以根据需要剔除）", "mindpin-all"],
+            #["基础", "mindpin-demo"],
+            #["自定义", "mindpin-custom"]
+          ]
     end
   end
 end
 
-unless prefs[:announcements]
-  say_loud '', 'Get on the mailing list for Rails Composer news?'
-  prefs[:announcements] = ask_wizard('Enter your email address:')
-  if prefs[:announcements].present?
-    system "curl --silent http://mailinglist.railscomposer.com/api -d'visitor[email]=#{prefs[:announcements]}' > /dev/null"
-    prefs[:announcements] = 'mailinglist'
-  else
-    prefs[:announcements] = 'none'
-  end
-end
+# 是否订阅Rails Composer news
+#unless prefs[:announcements]
+  #say_loud '', 'Get on the mailing list for Rails Composer news?'
+  #prefs[:announcements] = ask_wizard('Enter your email address:')
+  #if prefs[:announcements].present?
+    #system "curl --silent http://mailinglist.railscomposer.com/api -d'visitor[email]=#{prefs[:announcements]}' > /dev/null"
+    #prefs[:announcements] = 'mailinglist'
+  #else
+    #prefs[:announcements] = 'none'
+  #end
+#end
 # >-------------------------- recipes/railsapps.rb ---------------------------end<
 # >-------------------------- templates/recipe.erb ---------------------------end<
+
+
+# >-------------------------- templates/recipe.erb ---------------------------start<
+# >------------------------------[ mindpin-all ]------------------------------<
+@current_recipe = "mindpin-all"
+@before_configs["mindpin-all"].call if @before_configs["mindpin-all"]
+say_recipe 'mindpin-all'
+@configs[@current_recipe] = config
+# >------------------------- recipes/mindpin-all.rb --------------------------start<
+
+# Application template recipe for the rails_apps_composer. Change the recipe here:
+# 暂时还没弄这个地址
+# https://github.com/destinyd/rails_apps_composer/blob/master/recipes/mindpin-all.rb
+
+if prefer :apps4, 'mindpin-all'
+
+  # preferences
+  prefs[:authentication] = 'devise'
+  prefs[:authorization] = false
+  prefs[:dashboard] = 'none'
+  prefs[:ban_spiders] = false
+  prefs[:better_errors] = true
+  prefs[:database] = 'mongoid' #'sqlite'
+  prefs[:deployment] = false #'heroku'
+  prefs[:devise_modules] = 'default' #false
+  prefs[:dev_webserver] = 'webrick'
+  prefs[:email] = 'gmail'
+  prefs[:form_builder] = 'simple_form'
+  # todo replace to lily?
+  prefs[:frontend] = 'bootstrap3'
+  prefs[:github] = false
+  prefs[:git] = true
+  prefs[:local_env_file] = false #'none'
+  prefs[:prod_webserver] = 'unicorn'
+  prefs[:pry] = false
+  prefs[:quiet_assets] = true
+  prefs[:secrets] = ['owner_email', 'mailchimp_list_id', 'mailchimp_api_key']
+  prefs[:templates] = 'haml'
+  prefs[:tests] = 'rspec' #false
+  prefs[:pages] = 'none'
+  prefs[:locale] = 'none'
+  prefs[:analytics] = 'none'
+  # rubocop ruby代码分析工具
+  prefs[:rubocop] = false
+
+  # gems
+  gsub_file 'Gemfile', /rubygems.org/, 'ruby.taobao.org'
+  gsub_file 'Gemfile', /gem 'sqlite3'\n/, ''
+  #add_gem 'mongoid'
+
+  # photo
+  add_gem 'carrierwave'
+  add_gem 'carrierwave-mongoid'
+  add_gem 'mini_magick'
+  # carrierwave-aliyun
+  add_gem 'rest-client'
+  add_gem 'carrierwave-aliyun'
+  # photo end
+
+  # page
+  add_gem 'kaminari'
+
+  add_gem 'mina', github: 'fushang318/mina', tag: 'v0.2.0fix'
+  add_gem 'sidekiq'
+  add_gem 'cells'
+  add_gem 'elastic_searchable'
+  add_gem 'ruby-pinyin'
+  # Makes running your Rails app easier. Based on the ideas behind 12factor.net
+  #add_gem 'rails_12factor', :group => :production
+
+  stage_three do
+    # 从第三方下载，引用
+    say_wizard "recipe stage three"
+    repo = 'https://raw.github.com/RailsApps/mindpin-all/master/'
+
+    ## >-------------------------------[ Models ]--------------------------------<
+
+    #copy_from_repo 'app/models/contact.rb', :repo => repo
+    #copy_from_repo 'app/models/visitor.rb', :repo => repo
+
+    ## >-------------------------------[ Controllers ]--------------------------------<
+
+    #copy_from_repo 'app/controllers/contacts_controller.rb', :repo => repo
+    #copy_from_repo 'app/controllers/visitors_controller.rb', :repo => repo
+
+    ## >-------------------------------[ Mailers ]--------------------------------<
+
+    #generate 'mailer UserMailer'
+    #copy_from_repo 'app/mailers/user_mailer.rb', :repo => repo
+
+    ## >-------------------------------[ Views ]--------------------------------<
+
+    #copy_from_repo 'app/views/contacts/new.html.erb', :repo => repo
+    #copy_from_repo 'app/views/pages/about.html.erb', :repo => repo
+    #copy_from_repo 'app/views/user_mailer/contact_email.html.erb', :repo => repo
+    #copy_from_repo 'app/views/user_mailer/contact_email.text.erb', :repo => repo
+    #copy_from_repo 'app/views/visitors/new.html.erb', :repo => repo
+    ## create navigation links using the rails_layout gem
+    #generate 'layout:navigation -f'
+
+    ## >-------------------------------[ Routes ]--------------------------------<
+
+    #copy_from_repo 'config/routes.rb', :repo => repo
+
+    ## >-------------------------------[ Assets ]--------------------------------<
+
+    #copy_from_repo 'app/assets/javascripts/segmentio.js', :repo => repo
+
+  end
+end
+# >------------------------- recipes/mindpin-all.rb --------------------------end<
+# >-------------------------- templates/recipe.erb ---------------------------end<
+
+
 
 # >-------------------------- templates/recipe.erb ---------------------------start<
 # >------------------------------[ learn_rails ]------------------------------<
@@ -1393,6 +1533,8 @@ gsub_file 'Gemfile', /gem 'pg'.*/, ''
 add_gem 'pg' if prefer :database, 'postgresql'
 gsub_file 'Gemfile', /gem 'mysql2'.*/, ''
 add_gem 'mysql2' if prefer :database, 'mysql'
+gsub_file 'Gemfile', /gem 'mongoid'.*/, ''
+add_gem 'mongoid' if prefer :database, 'mongoid'
 
 ## Gem to set up controllers, views, and routing in the 'apps4' recipe
 add_gem 'rails_apps_pages', :group => :development if prefs[:apps4]
@@ -1532,9 +1674,17 @@ stage_two do
       gsub_file "config/database.yml", /database: myapp_test/,        "database: #{app_name}_test"
       gsub_file "config/database.yml", /database: myapp_production/,  "database: #{app_name}_production"
     end
+    if prefer :database, 'mongoid'
+      generate 'mongoid:config'
+      gsub_file "config/mongoid.yml", /database: myapp_development/, "database: #{app_name}_development"
+      gsub_file "config/mongoid.yml", /database: myapp_test/,        "database: #{app_name}_test"
+      gsub_file "config/mongoid.yml", /database: myapp_production/,  "database: #{app_name}_production"
+    end
     unless prefer :database, 'sqlite'
       if (prefs.has_key? :drop_database) ? prefs[:drop_database] :
-          (yes_wizard? "Okay to drop all existing databases named #{app_name}? 'No' will abort immediately!")
+        # 删掉原来存在的数据库
+          #(yes_wizard? "Okay to drop all existing databases named #{app_name}? 'No' will abort immediately!")
+          (yes_wizard? "确认是否drop #{app_name} 的所有数据库? 'No' 将会导致程序终止!")
         run 'bundle exec rake db:drop'
       else
         raise "aborted at user's request"
@@ -1763,14 +1913,16 @@ stage_two do
     generate 'devise:install'
     generate 'devise_invitable:install' if prefer :devise_modules, 'invitable'
     generate 'devise user' # create the User model
-    unless (prefer :apps4, 'rails-stripe-checkout') || (prefer :apps4, 'rails-stripe-coupons')
+    unless (prefer :apps4, 'rails-stripe-checkout') || (prefer :apps4, 'rails-stripe-coupons') || (prefer :apps4, 'mindpin-all')
       generate 'migration AddNameToUsers name:string'
     end
     if (prefer :devise_modules, 'confirmable') || (prefer :devise_modules, 'invitable')
       gsub_file 'app/models/user.rb', /:registerable,/, ":registerable, :confirmable,"
       generate 'migration AddConfirmableToUsers confirmation_token:string confirmed_at:datetime confirmation_sent_at:datetime unconfirmed_email:string'
     end
-    run 'bundle exec rake db:migrate'
+    unless (prefer :database, 'mongoid')
+      run 'bundle exec rake db:migrate'
+    end
   end
   ### GIT ###
   git :add => '-A' if prefer :git, true
