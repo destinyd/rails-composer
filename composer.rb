@@ -516,6 +516,7 @@ if prefer :apps4, 'mindpin-all'
     repo = 'https://raw.githubusercontent.com/destinyd/rails-composer-1/master/files/'
 
     ## >-------------------------------[ Weibo ]--------------------------------<
+    copy_from_repo 'app/assets/stylesheets/weibo.css.scss', :repo => repo
     copy_from_repo 'app/controllers/omniauth_callbacks_controller.rb', :repo => repo
     copy_from_repo 'app/models/user.rb', :repo => repo
     copy_from_repo 'app/models/user_token.rb', :repo => repo
@@ -2249,7 +2250,11 @@ FILE
   if prefer :authentication, 'devise'
     case prefs[:frontend]
       when 'bootstrap3'
-        generate 'layout:devise bootstrap3 -f'
+        if prefer :database, 'mongoid'
+          generate 'layout:devise bootstrap3 -s'
+        else
+          generate 'layout:devise bootstrap3 -f'
+        end
       when 'foundation5'
         generate 'layout:devise foundation5 -f'
     end
