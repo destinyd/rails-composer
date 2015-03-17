@@ -502,13 +502,26 @@ if prefer :apps4, 'mindpin-all'
   add_gem 'cells'
   add_gem 'elastic_searchable'
   add_gem 'ruby-pinyin'
+
+  # omniauth weibo
+  add_gem 'omniauth'
+  add_gem 'omniauth-weibo-oauth2'
   # Makes running your Rails app easier. Based on the ideas behind 12factor.net
   #add_gem 'rails_12factor', :group => :production
 
   stage_three do
     # 从第三方下载，引用
     say_wizard "recipe stage three"
-    repo = 'https://raw.github.com/RailsApps/mindpin-all/master/'
+    repo = 'https://raw.github.com/destinyd/rails-composer-1/master/'
+
+    ## >-------------------------------[ Weibo ]--------------------------------<
+    copy_from_repo 'app/controllers/omniauth_callbacks_controller.rb', :repo => repo
+    copy_from_repo 'app/models/user.rb', :repo => repo
+    copy_from_repo 'app/models/user_token.rb', :repo => repo
+    copy_from_repo 'app/views/devise/sessions/new.html.erb', :repo => repo
+    copy_from_repo 'config/application.yml', :repo => repo
+    copy_from_repo 'config/initializers/devise.rb', :repo => repo
+    copy_from_repo 'config/routes.rb', :repo => repo
 
     ## >-------------------------------[ Models ]--------------------------------<
 
