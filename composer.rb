@@ -472,7 +472,7 @@ if prefer :apps4, 'mindpin-all'
   prefs[:pry] = false
   prefs[:quiet_assets] = true
   prefs[:secrets] = ['owner_email', 'mailchimp_list_id', 'mailchimp_api_key']
-  prefs[:templates] = 'haml'
+  prefs[:templates] = 'erb' #'haml'
   prefs[:tests] = 'rspec' #false
   prefs[:pages] = 'none'
   prefs[:locale] = 'none'
@@ -506,13 +506,14 @@ if prefer :apps4, 'mindpin-all'
   # omniauth weibo
   add_gem 'omniauth'
   add_gem 'omniauth-weibo-oauth2'
+
   # Makes running your Rails app easier. Based on the ideas behind 12factor.net
   #add_gem 'rails_12factor', :group => :production
 
   stage_three do
     # 从第三方下载，引用
     say_wizard "recipe stage three"
-    repo = 'https://raw.github.com/destinyd/rails-composer-1/master/'
+    repo = 'https://raw.githubusercontent.com/destinyd/rails-composer-1/master/files/'
 
     ## >-------------------------------[ Weibo ]--------------------------------<
     copy_from_repo 'app/controllers/omniauth_callbacks_controller.rb', :repo => repo
@@ -1703,7 +1704,9 @@ stage_two do
         raise "aborted at user's request"
       end
     end
-    run 'bundle exec rake db:create:all'
+    unless prefer :database, 'mongoid'
+      run 'bundle exec rake db:create:all'
+    end
     ## Git
     git :add => '-A' if prefer :git, true
     git :commit => '-qm "rails_apps_composer: create database"' if prefer :git, true
