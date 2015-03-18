@@ -205,7 +205,7 @@ end
 def html_to_haml(source)
   begin
     html = open(source) {|input| input.binmode.read }
-    Haml::HTML.new(html, :erb => true, :xhtml => true).render
+    Html2haml::HTML.new(html, :erb => true, :xhtml => true).render
   rescue RubyParser::SyntaxError
     say_wizard "Ignoring RubyParser::SyntaxError"
     # special case to accommodate https://github.com/RailsApps/rails-composer/issues/55
@@ -472,7 +472,7 @@ if prefer :apps4, 'mindpin-all'
   prefs[:pry] = false
   prefs[:quiet_assets] = true
   prefs[:secrets] = ['owner_email', 'mailchimp_list_id', 'mailchimp_api_key']
-  prefs[:templates] = 'erb' #'haml'
+  prefs[:templates] = 'haml'
   prefs[:tests] = 'rspec' #false
   prefs[:pages] = 'none'
   prefs[:locale] = 'none'
@@ -516,15 +516,21 @@ if prefer :apps4, 'mindpin-all'
     # 从第三方下载，引用
     say_wizard "recipe stage three"
     repo = 'https://raw.githubusercontent.com/destinyd/rails-composer-1/master/files/'
+    # for test
+    #repo = '/opt/ap/rails/mindpin/rails-composer/files/'
 
     ## >-------------------------------[ Weibo ]--------------------------------<
     copy_from_repo 'app/assets/stylesheets/weibo.css.scss', :repo => repo
     copy_from_repo 'app/controllers/omniauth_callbacks_controller.rb', :repo => repo
     copy_from_repo 'app/controllers/home_controller.rb', :repo => repo
+
     copy_from_repo 'app/models/user.rb', :repo => repo
     copy_from_repo 'app/models/user_token.rb', :repo => repo
+
     copy_from_repo 'app/views/devise/sessions/new.html.erb', :repo => repo
     copy_from_repo 'app/views/home/index.html.erb', :repo => repo
+    copy_from_repo 'app/views/layouts/_navigation_links.html.erb', :repo => repo
+
     copy_from_repo 'config/application.yml', :repo => repo
     copy_from_repo 'config/initializers/devise.rb', :repo => repo
     copy_from_repo 'config/initializers/weibo.rb', :repo => repo
@@ -1942,7 +1948,9 @@ stage_two do
     gsub_file 'config/initializers/filter_parameter_logging.rb', /:password/, ':password, :password_confirmation'
     generate 'devise:install'
     generate 'devise_invitable:install' if prefer :devise_modules, 'invitable'
-    generate 'devise user' # create the User model
+    unless prefer :database, 'mongoid'
+      generate 'devise user' # create the User model
+    end
     unless (prefer :apps4, 'rails-stripe-checkout') || (prefer :apps4, 'rails-stripe-coupons') || (prefer :apps4, 'mindpin-all')
       generate 'migration AddNameToUsers name:string'
     end
@@ -2104,7 +2112,7 @@ stage_two do
       generate 'pages:authorized -f' if prefer :authorization, 'pundit'
   end
   generate 'pages:upmin -f' if prefer :dashboard, 'upmin'
-  generate 'layout:navigation -f'
+  generate 'layout:navigation -f' unless prefer :database, 'mongoid'
   ### GIT ###
   git :add => '-A' if prefer :git, true
   git :commit => '-qm "rails_apps_composer: add pages"' if prefer :git, true
@@ -2264,7 +2272,8 @@ FILE
     case prefs[:frontend]
       when 'bootstrap3'
         if prefer :database, 'mongoid'
-          generate 'layout:devise bootstrap3 -s'
+          # copy from repo
+          #generate 'layout:devise bootstrap3 -s'
         else
           generate 'layout:devise bootstrap3 -f'
         end
@@ -2273,7 +2282,10 @@ FILE
     end
   end
   # create navigation links using the rails_layout gem
-  generate 'layout:navigation -f'
+  # mongoid copy from repo
+  unless prefer :database, 'mongoid'
+    generate 'layout:navigation -f'
+  end
   if prefer :apps4, 'rails-stripe-coupons'
     inject_into_file 'app/views/layouts/_navigation_links.html.erb', ", data: { no_turbolink: true }", :after => "new_user_registration_path"
     inject_into_file 'app/views/layouts/_navigation_links.html.erb', "\n    <li><%= link_to 'Coupons', coupons_path %></li>", :after => "users_path %></li>"
