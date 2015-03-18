@@ -518,9 +518,11 @@ if prefer :apps4, 'mindpin-all'
     ## >-------------------------------[ Weibo ]--------------------------------<
     copy_from_repo 'app/assets/stylesheets/weibo.css.scss', :repo => repo
     copy_from_repo 'app/controllers/omniauth_callbacks_controller.rb', :repo => repo
+    copy_from_repo 'app/controllers/home_controller.rb', :repo => repo
     copy_from_repo 'app/models/user.rb', :repo => repo
     copy_from_repo 'app/models/user_token.rb', :repo => repo
     copy_from_repo 'app/views/devise/sessions/new.html.erb', :repo => repo
+    copy_from_repo 'app/views/home/index.html.erb', :repo => repo
     copy_from_repo 'config/application.yml', :repo => repo
     copy_from_repo 'config/initializers/devise.rb', :repo => repo
     copy_from_repo 'config/routes.rb', :repo => repo
