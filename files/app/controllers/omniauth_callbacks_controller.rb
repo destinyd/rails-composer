@@ -20,8 +20,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
           sign_in_and_redirect(authentication.user)
         else
           unless omniauth.uid.blank?
-            user = User.where(uid: omniauth.uid).first
-            user ||= User.new(:uid => omniauth.uid, :nickname => omniauth.info.nickname)
+            user = User.new(:nickname => omniauth.info.nickname)
             user.avatar_url = omniauth.extra.try(:raw_info).try(:avatar_hd)
           else
             user = User.new
