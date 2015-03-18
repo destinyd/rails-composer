@@ -45,3 +45,19 @@ h3. 将Mindpin Rails Composer设置rails默认模板。
 </pre>
 
 以后用Rails创建新项目，都会根据最新的Mindpin Rails Composer模板创建项目。
+
+
+h2. 使用注意事项
+
+h3. WeiboOAuth2
+
+Mindpin基本所有项目都使用weibo oauth2，来进行登录。需要修改生成项目的 @config/application.yml@ 下的配置。
+
+<pre>
+SINA_APP_KEY: 'test'
+SINA_APP_SERCET: 'test'
+SINA_REDIRECT_URI: 'http://localhost:3000/users/auth/weibo/callback'
+</pre>
+
+SINA_APP_KEY、SINA_APP_SERCET在http://open.weibo.com 申请后获取
+SINA_REDIRECT_URI: 为微博回调链接，用于weibo_2，将localhost:3000改为对应的网址即可。

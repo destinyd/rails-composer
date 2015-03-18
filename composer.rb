@@ -467,7 +467,7 @@ if prefer :apps4, 'mindpin-all'
   prefs[:frontend] = 'bootstrap3'
   prefs[:github] = false
   prefs[:git] = true
-  prefs[:local_env_file] = false #'none'
+  prefs[:local_env_file] = 'figaro' #'none'
   prefs[:prod_webserver] = 'unicorn'
   prefs[:pry] = false
   prefs[:quiet_assets] = true
@@ -506,6 +506,8 @@ if prefer :apps4, 'mindpin-all'
   # omniauth weibo
   add_gem 'omniauth'
   add_gem 'omniauth-weibo-oauth2'
+  # weibo api v2
+  add_gem 'weibo_2'
 
   # Makes running your Rails app easier. Based on the ideas behind 12factor.net
   #add_gem 'rails_12factor', :group => :production
@@ -525,6 +527,7 @@ if prefer :apps4, 'mindpin-all'
     copy_from_repo 'app/views/home/index.html.erb', :repo => repo
     copy_from_repo 'config/application.yml', :repo => repo
     copy_from_repo 'config/initializers/devise.rb', :repo => repo
+    copy_from_repo 'config/initializers/weibo.rb', :repo => repo
     copy_from_repo 'config/routes.rb', :repo => repo
 
     ## >-------------------------------[ Models ]--------------------------------<
@@ -1742,10 +1745,17 @@ stage_two do
   end
   ## Figaro Gem
   if prefer :local_env_file, 'figaro'
-    run 'figaro install'
-    gsub_file 'config/application.yml', /# PUSHER_.*\n/, ''
-    gsub_file 'config/application.yml', /# STRIPE_.*\n/, ''
-    prepend_to_file 'config/application.yml' do <<-FILE
+    if prefer :database, 'mongoid'
+      append_file '.gitignore' do <<-FILE
+# Ignore application configuration
+/config/application.yml
+FILE
+      end
+    else
+      run 'figaro install'
+      gsub_file 'config/application.yml', /# PUSHER_.*\n/, ''
+      gsub_file 'config/application.yml', /# STRIPE_.*\n/, ''
+      prepend_to_file 'config/application.yml' do <<-FILE
 # Add account credentials and API keys here.
 # See http://railsapps.github.io/rails-environment-variables.html
 # This file should be listed in .gitignore to keep your settings secret!
@@ -1755,6 +1765,7 @@ stage_two do
 # makes 'Your_Gmail_Username' available as ENV["GMAIL_USERNAME"]
 
 FILE
+      end
     end
   end
   ## Foreman Gem
