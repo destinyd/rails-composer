@@ -94,7 +94,7 @@ end
 def add_gem(*all) Gemfile.add(*all); end
 
 # todo 如果有新的recipe, 必须添加选项进数组，才可以被执行
-@recipes = ["core", "git", "railsapps", "mindpin-all", "learn_rails", "rails_bootstrap", "rails_foundation", "rails_omniauth", "rails_devise", "rails_devise_roles", "rails_devise_pundit", "rails_signup_download", "rails_mailinglist_activejob", "rails_stripe_checkout", "rails_stripe_coupons", "setup", "locale", "readme", "gems", "tests", "email", "devise", "omniauth", "roles", "frontend", "pages", "init", "analytics", "deployment", "extras"]
+@recipes = ["core", "git", "railsapps", "mindpin-all", "mindpin-base", "learn_rails", "rails_bootstrap", "rails_foundation", "rails_omniauth", "rails_devise", "rails_devise_roles", "rails_devise_pundit", "rails_signup_download", "rails_mailinglist_activejob", "rails_stripe_checkout", "rails_stripe_coupons", "setup", "locale", "readme", "gems", "tests", "email", "devise", "omniauth", "roles", "frontend", "pages", "init", "analytics", "deployment", "extras"]
 @prefs = {}
 @gems = []
 @diagnostics_recipes = [["example"], ["setup"], ["railsapps"], ["gems", "setup"], ["gems", "readme", "setup"], ["extras", "gems", "readme", "setup"], ["example", "git"], ["git", "setup"], ["git", "railsapps"], ["gems", "git", "setup"], ["gems", "git", "readme", "setup"], ["extras", "gems", "git", "readme", "setup"], ["email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["core", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["core", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["core", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["email", "example", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["email", "example", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["email", "example", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["apps4", "core", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["apps4", "core", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "tests"], ["apps4", "core", "deployment", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "testing"], ["apps4", "core", "deployment", "email", "extras", "frontend", "gems", "git", "init", "railsapps", "readme", "setup", "tests"], ["apps4", "core", "deployment", "devise", "email", "extras", "frontend", "gems", "git", "init", "omniauth", "pundit", "railsapps", "readme", "setup", "tests"]]
@@ -415,7 +415,7 @@ when "4"
           prefs[:apps4] = multiple_choice "选择一个模板.",
           [
             ["全套（可以根据需要剔除）", "mindpin-all"],
-            #["基础", "mindpin-demo"],
+            ["基础", "mindpin-base"],
             #["自定义", "mindpin-custom"]
           ]
     end
@@ -573,6 +573,92 @@ if prefer :apps4, 'mindpin-all'
 end
 # >------------------------- recipes/mindpin-all.rb --------------------------end<
 # >-------------------------- templates/recipe.erb ---------------------------end<
+
+# >-------------------------- templates/recipe.erb ---------------------------start<
+# >------------------------------[ mindpin-base ]------------------------------<
+@current_recipe = "mindpin-base"
+@before_configs["mindpin-base"].call if @before_configs["mindpin-all"]
+say_recipe 'mindpin-base'
+@configs[@current_recipe] = config
+# >------------------------- recipes/mindpin-all.rb --------------------------start<
+
+# Application template recipe for the rails_apps_composer. Change the recipe here:
+# 暂时还没弄这个地址
+# https://github.com/destinyd/rails_apps_composer/blob/master/recipes/mindpin-all.rb
+
+if prefer :apps4, 'mindpin-base'
+
+  # preferences
+  prefs[:authentication] = 'devise'
+  prefs[:authorization] = false
+  prefs[:dashboard] = 'none'
+  prefs[:ban_spiders] = false
+  prefs[:better_errors] = false
+  prefs[:database] = 'mongoid'
+  prefs[:deployment] = false
+  prefs[:devise_modules] = 'default'
+  prefs[:dev_webserver] = 'webrick'
+  prefs[:email] = 'none'
+  prefs[:form_builder] = 'simple_form'
+  # todo replace to lily?
+  prefs[:frontend] = false #'bootstrap3'
+  prefs[:github] = false
+  prefs[:git] = true
+  prefs[:local_env_file] = 'figaro' #'none'
+  prefs[:prod_webserver] = 'same'
+  prefs[:pry] = false
+  prefs[:quiet_assets] = false
+  prefs[:secrets] = nil # ['mailchimp_list_id', 'mailchimp_api_key']
+  prefs[:templates] = 'haml'
+  prefs[:tests] = false #'rspec' #false
+  prefs[:pages] = 'none'
+  prefs[:locale] = 'none'
+  prefs[:analytics] = 'none'
+  # rubocop ruby代码分析工具
+  prefs[:rubocop] = false
+
+  # gems
+  gsub_file 'Gemfile', /rubygems.org/, 'ruby.taobao.org'
+  gsub_file 'Gemfile', /gem 'sqlite3'\n/, ''
+  #add_gem 'mongoid'
+
+  # page
+  add_gem 'kaminari'
+
+  add_gem 'mina', github: 'fushang318/mina', tag: 'v0.2.0fix'
+
+  # omniauth weibo
+  add_gem 'omniauth'
+  add_gem 'omniauth-weibo-oauth2'
+
+  stage_three do
+    # 从第三方下载，引用
+    say_wizard "recipe stage three"
+    #repo = 'https://raw.githubusercontent.com/destinyd/rails-composer-1/master/files/'
+    # for test
+    repo = '/opt/ap/rails/mindpin/rails-composer/files/'
+
+    ## >-------------------------------[ Weibo ]--------------------------------<
+    copy_from_repo 'app/assets/stylesheets/weibo.css.scss', :repo => repo
+    copy_from_repo 'app/controllers/omniauth_callbacks_controller.rb', :repo => repo
+    copy_from_repo 'app/controllers/home_controller.rb', :repo => repo
+
+    copy_from_repo 'app/models/user.rb', :repo => repo
+    copy_from_repo 'app/models/user_token.rb', :repo => repo
+
+    copy_from_repo 'app/views/devise/sessions/new.html.erb', :repo => repo
+    copy_from_repo 'app/views/home/index.html.erb', :repo => repo
+    copy_from_repo 'app/views/layouts/_navigation_links.html.erb', :repo => repo
+
+    copy_from_repo 'config/application.yml', :repo => repo
+    copy_from_repo 'config/initializers/devise.rb', :repo => repo
+    copy_from_repo 'config/routes.rb', :repo => repo
+
+  end
+end
+# >------------------------- recipes/mindpin-base.rb --------------------------end<
+# >-------------------------- templates/recipe.erb ---------------------------end<
+
 
 
 
@@ -2795,7 +2881,11 @@ end
 
 @current_recipe = nil
 say_wizard "Stage Three (running recipe 'stage_three' callbacks)."
-@stage_three_blocks.each{|b| config = @configs[b[0]] || {}; @current_recipe = b[0]; puts @current_recipe; b[1].call}
+@stage_three_blocks.each{|b| config = @configs[b[0]] || {};
+                         @current_recipe = b[0];
+                         puts @current_recipe;
+                         b[1].call
+}
 
 @current_recipe = nil
 say_wizard("Your new application will contain diagnostics in its README file.")
