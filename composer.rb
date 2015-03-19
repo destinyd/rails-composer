@@ -634,9 +634,9 @@ if prefer :apps4, 'mindpin-base'
   stage_three do
     # 从第三方下载，引用
     say_wizard "recipe stage three"
-    #repo = 'https://raw.githubusercontent.com/destinyd/rails-composer-1/master/files/'
+    repo = 'https://raw.githubusercontent.com/destinyd/rails-composer-1/master/files/'
     # for test
-    repo = '/opt/ap/rails/mindpin/rails-composer/files/'
+    #repo = '/opt/ap/rails/mindpin/rails-composer/files/'
 
     ## >-------------------------------[ Weibo ]--------------------------------<
     copy_from_repo 'app/assets/stylesheets/weibo.css.scss', :repo => repo
@@ -702,9 +702,9 @@ if prefer :apps4, 'mindpin-custom'
   stage_three do
     # 从第三方下载，引用
     say_wizard "recipe stage three"
-    #repo = 'https://raw.githubusercontent.com/destinyd/rails-composer-1/master/files/'
+    repo = 'https://raw.githubusercontent.com/destinyd/rails-composer-1/master/files/'
     # for test
-    repo = '/opt/ap/rails/mindpin/rails-composer/files/'
+    #repo = '/opt/ap/rails/mindpin/rails-composer/files/'
 
     ## >-------------------------------[ Weibo ]--------------------------------<
     copy_from_repo 'app/assets/stylesheets/weibo.css.scss', :repo => repo
