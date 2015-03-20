@@ -1367,10 +1367,10 @@ gemfile = File.read(destination_root() + '/Gemfile')
 sqlite_detected = gemfile.include? 'sqlite3'
 
 ## Web Server
-prefs[:dev_webserver] = multiple_choice "Web server for development?", [["WEBrick (default)", "webrick"],
+prefs[:dev_webserver] = multiple_choice "Web server for development?(测试环境的Web Server)", [["WEBrick (default)", "webrick"],
   ["Thin", "thin"], ["Unicorn", "unicorn"], ["Puma", "puma"], ["Phusion Passenger (Apache/Nginx)", "passenger"],
   ["Phusion Passenger (Standalone)", "passenger_standalone"]] unless prefs.has_key? :dev_webserver
-prefs[:prod_webserver] = multiple_choice "Web server for production?", [["Same as development", "same"],
+prefs[:prod_webserver] = multiple_choice "Web server for production?(生产环境的Web Server)", [["Same as development", "same"],
   ["Thin", "thin"], ["Unicorn", "unicorn"], ["Puma", "puma"], ["Phusion Passenger (Apache/Nginx)", "passenger"],
   ["Phusion Passenger (Standalone)", "passenger_standalone"]] unless prefs.has_key? :prod_webserver
 prefs[:prod_webserver] = prefs[:dev_webserver] if prefs[:prod_webserver] == 'same'
@@ -1385,7 +1385,7 @@ prefs[:templates] = multiple_choice "Template engine?", [["ERB", "erb"], ["Haml"
 
 ## Testing Framework
 if recipes.include? 'tests'
-  prefs[:tests] = multiple_choice "Test framework?", [["None", "none"],
+  prefs[:tests] = multiple_choice "Test framework?(测试框架)", [["None", "none"],
     ["RSpec with Capybara", "rspec"]] unless prefs.has_key? :tests
   case prefs[:tests]
     when 'rspec'
@@ -1397,16 +1397,18 @@ end
 ## Front-end Framework
 if recipes.include? 'frontend'
   prefs[:frontend] = multiple_choice "Front-end framework?", [["None", "none"],
-    ["Bootstrap 3.3", "bootstrap3"], ["Bootstrap 2.3", "bootstrap2"],
-    ["Zurb Foundation 5.5", "foundation5"], ["Zurb Foundation 4.0", "foundation4"],
-    ["Simple CSS", "simple"]] unless prefs.has_key? :frontend
+    ["Bootstrap 3.3", "bootstrap3"],
+    #["Bootstrap 2.3", "bootstrap2"],
+    #["Zurb Foundation 5.5", "foundation5"], ["Zurb Foundation 4.0", "foundation4"],
+    ["Simple CSS", "simple"]
+  ] unless prefs.has_key? :frontend
 end
 
 ## Email
 if recipes.include? 'email'
   unless prefs.has_key? :email
     say_wizard "The Devise 'forgot password' feature requires email." if prefer :authentication, 'devise'
-    prefs[:email] = multiple_choice "Add support for sending email?", [["None", "none"], ["Gmail","gmail"], ["SMTP","smtp"],
+    prefs[:email] = multiple_choice "Add support for sending email?(是否支持发送email?)", [["None", "none"], ["Gmail","gmail"], ["SMTP","smtp"],
       ["SendGrid","sendgrid"], ["Mandrill","mandrill"]]
   end
 else
@@ -1462,7 +1464,7 @@ say_recipe 'locale'
 # https://github.com/RailsApps/rails_apps_composer/blob/master/recipes/locale.rb
 
 unless prefs[:locale]
-  prefs[:locale] = ask_wizard('Set a locale? Enter nothing for English, or es, de, etc:')
+  prefs[:locale] = ask_wizard('Set a locale? Enter nothing for English, or es, de, etc(语言环境,简体中文为zh-CN,直接回车为英文):')
   prefs[:locale] = 'none' unless prefs[:locale].present?
 end
 
@@ -2462,7 +2464,7 @@ say_recipe 'analytics'
 # Application template recipe for the rails_apps_composer. Change the recipe here:
 # https://github.com/RailsApps/rails_apps_composer/blob/master/recipes/analytics.rb
 
-prefs[:analytics] = multiple_choice "Install page-view analytics?", [["None", "none"],
+prefs[:analytics] = multiple_choice "Install page-view analytics?(使用什么站外统计分析工具？)", [["None", "none"],
   ["Google Analytics", "ga"],
   ["Segment.io", "segmentio"]] unless prefs.has_key? :analytics
 case prefs[:analytics]
@@ -2504,7 +2506,7 @@ say_recipe 'deployment'
 # Application template recipe for the rails_apps_composer. Change the recipe here:
 # https://github.com/RailsApps/rails_apps_composer/blob/master/recipes/deployment.rb
 
-prefs[:deployment] = multiple_choice "Prepare for deployment?", [["no", "none"],
+prefs[:deployment] = multiple_choice "Prepare for deployment?(默认已添加mina)", [["no", "none"],
     ["Heroku", "heroku"],
     ["Capistrano", "capistrano3"]] unless prefs.has_key? :deployment
 
@@ -2678,13 +2680,13 @@ end
 @before_configs["extras"].call if @before_configs["extras"]
 say_recipe 'extras'
 config = {}
-config['ban_spiders'] = yes_wizard?("Set a robots.txt file to ban spiders?") if true && true unless config.key?('ban_spiders') || prefs.has_key?(:ban_spiders)
-config['github'] = yes_wizard?("Create a GitHub repository?") if true && true unless config.key?('github') || prefs.has_key?(:github)
+config['ban_spiders'] = yes_wizard?("Set a robots.txt file to ban spiders?(设置 robots.txt 屏蔽搜索引擎蜘蛛?)") if true && true unless config.key?('ban_spiders') || prefs.has_key?(:ban_spiders)
+config['github'] = yes_wizard?("Create a GitHub repository?(创建一个github项目？)") if true && true unless config.key?('github') || prefs.has_key?(:github)
 config['local_env_file'] = multiple_choice("Add gem and file for environment variables?", [["None", "none"], ["Add .env with Foreman", "foreman"], ["Add application.yml with Figaro", "figaro"]]) if true && true unless config.key?('local_env_file') || prefs.has_key?(:local_env_file)
-config['quiet_assets'] = yes_wizard?("Reduce assets logger noise during development?") if true && true unless config.key?('quiet_assets') || prefs.has_key?(:quiet_assets)
-config['better_errors'] = yes_wizard?("Improve error reporting with 'better_errors' during development?") if true && true unless config.key?('better_errors') || prefs.has_key?(:better_errors)
-config['pry'] = yes_wizard?("Use 'pry' as console replacement during development and test?") if true && true unless config.key?('pry') || prefs.has_key?(:pry)
-config['rubocop'] = yes_wizard?("Use 'rubocop' to ensure that your code conforms to the Ruby style guide?") if true && true unless config.key?('rubocop') || prefs.has_key?(:rubocop)
+config['quiet_assets'] = yes_wizard?("Reduce assets logger noise during development?(过滤assets log显示?)") if true && true unless config.key?('quiet_assets') || prefs.has_key?(:quiet_assets)
+config['better_errors'] = yes_wizard?("Improve error reporting with 'better_errors' during development?(在开发环境使用'better_errors'，获取更详细的错误报告？)") if true && true unless config.key?('better_errors') || prefs.has_key?(:better_errors)
+config['pry'] = yes_wizard?("Use 'pry' as console replacement during development and test?(是否使用 'pry' 作为开发与测试环境时的 console?)") if true && true unless config.key?('pry') || prefs.has_key?(:pry)
+config['rubocop'] = yes_wizard?("Use 'rubocop' to ensure that your code conforms to the Ruby style guide?(是否使用 'rubocop' gem， 已确保你的代码符合 Ruby 风格?)") if true && true unless config.key?('rubocop') || prefs.has_key?(:rubocop)
 @configs[@current_recipe] = config
 # >---------------------------- recipes/extras.rb ----------------------------start<
 
@@ -2702,7 +2704,7 @@ if File.exist?('.ruby-gemset')
   rvmrc_detected = rvmrc_file.include? app_name
 end
 unless rvmrc_detected || (prefs.has_key? :rvmrc)
-  prefs[:rvmrc] = yes_wizard? "Use or create a project-specific rvm gemset?"
+  prefs[:rvmrc] = yes_wizard? "Use or create a project-specific rvm gemset?(是否创建独立的rvm gemset)"
 end
 if prefs[:rvmrc]
   if which("rvm")
@@ -2836,7 +2838,7 @@ end
 ## JSRUNTIME
 case RbConfig::CONFIG['host_os']
   when /linux/i
-    prefs[:jsruntime] = yes_wizard? "Add 'therubyracer' JavaScript runtime (for Linux users without node.js)?" unless prefs.has_key? :jsruntime
+    prefs[:jsruntime] = yes_wizard? "添加 'therubyracer' JavaScript runtime (如已安装 node.js 可以直接选'No')?" unless prefs.has_key? :jsruntime
     if prefs[:jsruntime]
       say_wizard "recipe adding 'therubyracer' JavaScript runtime gem"
       add_gem 'therubyracer', :platform => :ruby
