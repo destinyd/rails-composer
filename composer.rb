@@ -499,7 +499,7 @@ if prefer :apps4, 'mindpin-all'
 
   add_gem 'mina', github: 'fushang318/mina', tag: 'v0.2.0fix'
   add_gem 'sidekiq'
-  add_gem 'cells'
+  add_gem 'cells', '4.0.1'
   add_gem 'elastic_searchable'
   add_gem 'ruby-pinyin'
 
