@@ -1980,6 +1980,10 @@ stage_two do
   if prefer :continuous_testing, 'guard'
     say_wizard "recipe initializing Guard"
     run 'bundle exec guard init'
+    if prefer(:database, 'mongoid') # for mongoid
+      copy_from_repo 'spec/support/database_cleaner.rb', :repo => repo
+      copy_from_repo 'spec/support/disable_active_record_fixtures.rb', :repo => repo
+    end
   end
   git :add => '-A' if prefer :git, true
   git :commit => '-qm "rails_apps_composer: testing framework"' if prefer :git, true
