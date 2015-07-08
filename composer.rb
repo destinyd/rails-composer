@@ -512,6 +512,9 @@ if prefer :apps4, 'mindpin-all'
   # Makes running your Rails app easier. Based on the ideas behind 12factor.net
   #add_gem 'rails_12factor', :group => :production
 
+  # 修复sass-rails ~> 5时未require 'sass'导致的BUG
+  gsub_file 'config/application.rb', /require "rails\/test_unit\/railtie"/, "require \"rails\/test_unit\/railtie\"\nrequire \"sass\""
+
   stage_three do
     # 从第三方下载，引用
     say_wizard "recipe stage three"
@@ -1988,6 +1991,12 @@ end
 stage_three do
   say_wizard "recipe stage three"
   if prefer :tests, 'rspec'
+    # 修复自动加载ActiveRecord导致BUG
+    if prefer(:database, 'mongoid') # for mongoid
+      repo = 'https://raw.githubusercontent.com/destinyd/rails-composer-1/master/files/'
+      copy_from_repo 'spec/support/database_cleaner.rb', :repo => repo
+      copy_from_repo 'spec/support/disable_active_record_fixtures.rb', :repo => repo
+    end
     if prefer :authentication, 'devise'
       generate 'testing:configure devise -f'
       if (prefer :devise_modules, 'confirmable') || (prefer :devise_modules, 'invitable')
@@ -2014,10 +2023,6 @@ stage_three do
     unless %w(users about+users).include?(prefs[:pages])
       remove_file 'spec/features/users/user_index_spec.rb'
       remove_file 'spec/features/users/user_show_spec.rb'
-    end
-    if prefer(:database, 'mongoid') # for mongoid
-      copy_from_repo 'spec/support/database_cleaner.rb', :repo => repo
-      copy_from_repo 'spec/support/disable_active_record_fixtures.rb', :repo => repo
     end
   end
 end
