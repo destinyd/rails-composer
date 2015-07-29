@@ -259,7 +259,7 @@ end
 #say_wizard("Your new application will contain diagnostics in its README file.")
 
 say_wizard("")
-say_wizard("中文版网址：https://github.com/destinyd/rails-composer-1")
+say_wizard("中文版网址：https://github.com/destinyd/rails-composer")
 
 if diagnostics_recipes.sort.include? recipes.sort
   diagnostics[:recipes] = 'success'
@@ -518,7 +518,7 @@ if prefer :apps4, 'mindpin-all'
   stage_three do
     # 从第三方下载，引用
     say_wizard "recipe stage three"
-    repo = 'https://raw.githubusercontent.com/destinyd/rails-composer-1/master/files/'
+    repo = 'https://raw.githubusercontent.com/destinyd/rails-composer/master/files/'
     # for test
     #repo = '/opt/ap/rails/mindpin/rails-composer/files/'
 
@@ -637,7 +637,7 @@ if prefer :apps4, 'mindpin-base'
   stage_three do
     # 从第三方下载，引用
     say_wizard "recipe stage three"
-    repo = 'https://raw.githubusercontent.com/destinyd/rails-composer-1/master/files/'
+    repo = 'https://raw.githubusercontent.com/destinyd/rails-composer/master/files/'
     # for test
     #repo = '/opt/ap/rails/mindpin/rails-composer/files/'
 
@@ -705,7 +705,7 @@ if prefer :apps4, 'mindpin-custom'
   stage_three do
     # 从第三方下载，引用
     say_wizard "recipe stage three"
-    repo = 'https://raw.githubusercontent.com/destinyd/rails-composer-1/master/files/'
+    repo = 'https://raw.githubusercontent.com/destinyd/rails-composer/master/files/'
     # for test
     #repo = '/opt/ap/rails/mindpin/rails-composer/files/'
 
@@ -1993,7 +1993,7 @@ stage_three do
   if prefer :tests, 'rspec'
     # 修复自动加载ActiveRecord导致BUG
     if prefer(:database, 'mongoid') # for mongoid
-      repo = 'https://raw.githubusercontent.com/destinyd/rails-composer-1/master/files/'
+      repo = 'https://raw.githubusercontent.com/destinyd/rails-composer/master/files/'
       copy_from_repo 'spec/support/database_cleaner.rb', :repo => repo
       copy_from_repo 'spec/support/disable_active_record_fixtures.rb', :repo => repo
     end
